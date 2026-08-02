@@ -7,6 +7,7 @@ function EditPost() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [flag, setFlag] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -15,6 +16,7 @@ function EditPost() {
       if (data) {
         setTitle(data.title)
         setContent(data.content || '')
+        setFlag(data.flag || '')
       }
       setLoading(false)
     }
@@ -25,7 +27,7 @@ function EditPost() {
     e.preventDefault()
     const { error } = await supabase
       .from('posts')
-      .update({ title, content })
+      .update({ title, content, flag: flag || null })
       .eq('id', id)
 
     if (error) {
@@ -38,7 +40,7 @@ function EditPost() {
   if (loading) return <p>Loading...</p>
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='post-form'>
       <input
         type="text"
         value={title}
@@ -49,6 +51,14 @@ function EditPost() {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
+      <select value={flag} onChange={(e) => setFlag(e.target.value)}>
+        <option value="">No flag</option>
+        <option value="Question">Question</option>
+        <option value="Opinion">Opinion</option>
+        <option value="Guide">Guide</option>
+        <option value="News">News</option>
+        <option value="Meme">Meme</option>
+      </select>
       <button type="submit">Save Changes</button>
     </form>
   )

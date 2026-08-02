@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { supabase } from '../supabaseClient'
 import { getUserId } from '../getUserId'
+import Spinner from '../components/Spinner'
 
 function CreatePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [imageFile, setImageFile] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [flag, setFlag] = useState('')
   const navigate = useNavigate()
 
   async function handleSubmit(e) {
@@ -37,7 +39,7 @@ function CreatePost() {
 
     const { data, error } = await supabase
       .from('posts')
-      .insert({ title, content, image_url: imageUrl, user_id: getUserId() })
+      .insert({ title, content, image_url: imageUrl, user_id: getUserId(), flag: flag || null })
       .select()
 
     setUploading(false)
@@ -51,7 +53,7 @@ function CreatePost() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='post-form'>
       <input
         type="text"
         placeholder="Title"
@@ -69,8 +71,16 @@ function CreatePost() {
         accept="image/*"
         onChange={(e) => setImageFile(e.target.files[0])}
       />
+      <select value={flag} onChange={(e) => setFlag(e.target.value)}>
+        <option value="">No flag</option>
+        <option value="Question">Question</option>
+        <option value="Opinion">Opinion</option>
+        <option value="Guide">Guide</option>
+        <option value="News">News</option>
+        <option value="Meme">Meme</option>
+      </select>
       <button type="submit" disabled={uploading}>
-        {uploading ? 'Posting...' : 'Create Post'}
+        {uploading ? <Spinner small /> : 'Create Post'}
       </button>
     </form>
   )

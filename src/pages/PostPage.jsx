@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router'
 import { supabase } from '../supabaseClient'
 import { getUserId } from '../getUserId'
+import Spinner from '../components/Spinner'
+import { ChevronUp } from 'lucide-react'
+import { flagIcons } from '../flagIcons'
 
 function PostPage() {
   const { id } = useParams()
@@ -96,18 +99,24 @@ function PostPage() {
     setPost(data)
   }
 
-  if (loading) return <p>Loading post...</p>
+  if (loading) return <Spinner />
   if (!post) return <p>Post not found.</p>
 
   const isOwner = post.user_id === currentUserId
+  const FlagIcon = post.flag ? flagIcons[post.flag] : null
 
   return (
     <div className="post-page">
       <h1>{post.title}</h1>
       <p className="post-page-meta">
+        {post.flag && (
+          <span className="post-flag">
+            <FlagIcon size={14} /> {post.flag}
+          </span>
+        )}
         {new Date(post.created_at).toLocaleString()} ·{' '}
         <button className="upvote-button" onClick={handleUpvote}>
-          ▲ {post.upvotes}
+          <ChevronUp size={16} /> {post.upvotes}
         </button>
       </p>
       {post.content && <p>{post.content}</p>}
