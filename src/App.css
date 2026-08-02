@@ -1,7 +1,66 @@
+
+/* Meadow (default) */
+:root {
+  --color-bg: #f2f6d0;
+  --color-surface: #d0e1d4;
+  --color-border: #d9d2b6;
+  --color-text: #4a4550;
+  --color-text-muted: #71697a;
+  --color-accent: #e4be9e;
+}
+
+/* Blush */
+body.theme-blush {
+  --color-bg: #f7bfb4;
+  --color-surface: #fbe0da;
+  --color-border: #db93b0;
+  --color-text: #5b4b49;
+  --color-text-muted: #7daf9c;
+  --color-accent: #23967f;
+}
+
+/* Sky */
+body.theme-sky {
+  --color-bg: #e1f2fe;
+  --color-surface: #98d2eb;
+  --color-border: #b2b1cf;
+  --color-text: #49392c;
+  --color-text-muted: #77625c;
+  --color-accent: #77625c;
+}
+
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem;
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+}
+
+.post-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
 }
