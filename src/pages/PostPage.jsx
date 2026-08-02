@@ -80,6 +80,22 @@ function PostPage() {
     setComments(comments.filter((c) => c.id !== commentId))
   }
 
+  async function handleUpvote() {
+    const { data, error } = await supabase
+      .from('posts')
+      .update({ upvotes: post.upvotes + 1 })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error(error)
+      return
+    }
+
+    setPost(data)
+  }
+
   if (loading) return <p>Loading post...</p>
   if (!post) return <p>Post not found.</p>
 
@@ -89,7 +105,10 @@ function PostPage() {
     <div className="post-page">
       <h1>{post.title}</h1>
       <p className="post-page-meta">
-        {new Date(post.created_at).toLocaleString()} · ▲ {post.upvotes}
+        {new Date(post.created_at).toLocaleString()} ·{' '}
+        <button className="upvote-button" onClick={handleUpvote}>
+          ▲ {post.upvotes}
+        </button>
       </p>
       {post.content && <p>{post.content}</p>}
       {post.image_url && <img src={post.image_url} alt={post.title} />}
