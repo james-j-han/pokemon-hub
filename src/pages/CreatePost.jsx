@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { supabase } from '../supabaseClient'
+import { getUserId } from '../getUserId'
 
 function CreatePost() {
   const [title, setTitle] = useState('')
@@ -36,7 +37,7 @@ function CreatePost() {
 
     const { data, error } = await supabase
       .from('posts')
-      .insert({ title, content, image_url: imageUrl })
+      .insert({ title, content, image_url: imageUrl, user_id: getUserId() })
       .select()
 
     setUploading(false)
